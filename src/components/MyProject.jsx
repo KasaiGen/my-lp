@@ -11,7 +11,38 @@ const projects = [
   { src: '/mypjt_all.png', label: 'Overview' },
 ]
 
-export default function MyProject() {
+// ── モバイル用シンプルレイアウト ──
+function MyProjectMobile() {
+  return (
+    <section className="relative py-20 px-6">
+      <div className="absolute inset-0 z-0">
+        <img src="/mypjt_background.png" alt="" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-black/70" />
+      </div>
+      <div className="relative z-10">
+        <div className="flex justify-center mb-10">
+          <img src="/mypjt_title.png" alt="My Project" className="h-12 object-contain" />
+        </div>
+        <div className="flex flex-col gap-6">
+          {projects.map((p, i) => (
+            <div key={i} className="rounded-2xl overflow-hidden">
+              <img
+                src={p.src}
+                alt={p.label}
+                className="w-full object-contain rounded-2xl"
+                style={{ background: 'rgba(255,255,255,0.04)' }}
+              />
+              <p className="text-white/60 text-xs mt-2 text-center tracking-widest">{p.label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ── デスクトップ用横スクロールレイアウト ──
+function MyProjectDesktop() {
   const sectionRef = useRef(null)
   const trackRef = useRef(null)
   const titleRef = useRef(null)
@@ -21,7 +52,6 @@ export default function MyProject() {
       const track = trackRef.current
       const totalWidth = track.scrollWidth - track.parentElement.offsetWidth
 
-      // 横スクロールアニメーション
       gsap.to(track, {
         x: -totalWidth,
         ease: 'none',
@@ -35,7 +65,6 @@ export default function MyProject() {
         },
       })
 
-      // タイトルフェードイン
       gsap.from(titleRef.current, {
         opacity: 0,
         y: 30,
@@ -52,19 +81,16 @@ export default function MyProject() {
 
   return (
     <section ref={sectionRef} className="relative overflow-hidden">
-      {/* 背景 */}
       <div className="absolute inset-0 z-0">
         <img src="/mypjt_background.png" alt="" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-black/60" />
       </div>
 
-      <div className="relative z-10 h-screen flex flex-col justify-center px-8 md:px-20">
-        {/* タイトル画像（中央配置） */}
+      <div className="relative z-10 h-screen flex flex-col justify-center px-20">
         <div ref={titleRef} className="flex justify-center mb-12">
-          <img src="/mypjt_title.png" alt="My Project" className="h-16 md:h-20 object-contain" />
+          <img src="/mypjt_title.png" alt="My Project" className="h-20 object-contain" />
         </div>
 
-        {/* 横スクロールトラック */}
         <div className="overflow-hidden">
           <div
             ref={trackRef}
@@ -75,7 +101,7 @@ export default function MyProject() {
               <div
                 key={i}
                 className="flex-shrink-0 relative group rounded-2xl overflow-hidden"
-                style={{ width: '280px' }}
+                style={{ width: 'clamp(200px, 28vw, 340px)' }}
               >
                 <img
                   src={p.src}
@@ -91,7 +117,6 @@ export default function MyProject() {
           </div>
         </div>
 
-        {/* スクロールヒント */}
         <div className="flex justify-center mt-10 gap-2 items-center opacity-40">
           <div className="w-8 h-px bg-white" />
           <span className="text-xs tracking-widest text-white">SCROLL</span>
@@ -99,5 +124,14 @@ export default function MyProject() {
         </div>
       </div>
     </section>
+  )
+}
+
+export default function MyProject() {
+  return (
+    <>
+      <div className="md:hidden"><MyProjectMobile /></div>
+      <div className="hidden md:block"><MyProjectDesktop /></div>
+    </>
   )
 }
