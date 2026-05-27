@@ -80,7 +80,7 @@ export default function MyVision() {
         </p>
         <h3
           ref={headlineRef}
-          className="text-4xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-tight"
+          className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-tight"
         >
           プレイングPMになる
         </h3>

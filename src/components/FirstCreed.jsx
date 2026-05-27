@@ -57,8 +57,7 @@ export default function AoteruCreed({ itemRef, textRef }) {
 
   return (
     <div ref={wrapRef} className="w-full md:w-[45%] flex-shrink-0">
-      {/* ベースとコメント入りを重ねる */}
-      <div className="relative max-w-[420px] mx-auto">
+      <div className="relative w-full max-w-[420px] mx-auto">
         <img
           ref={baseRef}
           src="/aoteru.png"

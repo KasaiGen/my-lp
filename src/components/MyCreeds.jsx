@@ -59,7 +59,7 @@ function CreedItem({ creed }) {
           style={{ filter: 'grayscale(10%) contrast(105%)' }}
         />
       </div>
-      <div ref={textRef} className="flex-1 max-w-lg">
+      <div ref={textRef} className="flex-1 w-full max-w-lg">
         <blockquote className="text-white text-base md:text-lg leading-loose mb-6 whitespace-pre-line">
           {creed.quote}
         </blockquote>
@@ -82,7 +82,7 @@ function FirstCreedItem() {
     >
       <FirstCreed itemRef={itemRef} textRef={textRef} />
 
-      <div ref={textRef} className="flex-1 max-w-lg">
+      <div ref={textRef} className="flex-1 w-full max-w-lg">
         <blockquote className="text-white text-base md:text-lg leading-loose mb-6 whitespace-pre-line">
           {'「すべての行動には結果が伴う。\n　それが己が意図しなかった結果だとしても。」'}
         </blockquote>
@@ -105,7 +105,7 @@ function SecondCreedItem() {
     >
       <SecondCreed itemRef={itemRef} textRef={textRef} />
 
-      <div ref={textRef} className="flex-1 max-w-lg">
+      <div ref={textRef} className="flex-1 w-full max-w-lg">
         <blockquote className="text-white text-base md:text-lg leading-loose mb-6">
           「全部 上手くいく」
         </blockquote>
@@ -128,7 +128,7 @@ function ThirdCreedItem() {
     >
       <ThirdCreed itemRef={itemRef} textRef={textRef} />
 
-      <div ref={textRef} className="flex-1 max-w-lg">
+      <div ref={textRef} className="flex-1 w-full max-w-lg">
         <blockquote className="text-white text-base md:text-lg leading-loose mb-6 whitespace-pre-line">
           {'「4年生で私より絵がウマい奴がいるなんて\n　絶っっ対に許せない」'}
         </blockquote>
