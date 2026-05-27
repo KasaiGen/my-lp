@@ -6,36 +6,36 @@ gsap.registerPlugin(ScrollTrigger)
 
 const milestones = [
   {
-    age: '〜5歳',
+    age: '~5歳',
     photo: '/first.jpeg',
     bg: '/bg_first.jpeg',
     title: '仮面ライダーに夢中',
-    desc: '仮面ライダー、ウルトラマンをよく観ていて、\n剣や棒が好きでした。\n姉と喧嘩をし、そのときにつけられた\n顔の傷が今も残っています。\n（喧嘩理由：自分が可愛こぶっている姿に\n　姉が腹を立てたため）',
+    desc: '仮面ライダー、ウルトラマンをよく観ていて、剣や棒が好きでした。姉と喧嘩をし、そのときにつけられた顔の傷が今も残っています。（喧嘩理由：自分が可愛こぶっている姿に姉が腹を立てたため）',
   },
   {
-    age: '〜10歳',
+    age: '~10歳',
     photo: '/second.jpeg',
-    bg: '/second.jpeg',
+    bg: '/bg_second.jpg',
     title: 'ピアノとの出会い',
-    desc: '小学4年生からピアノを習い始めました。\n当初はイヤイヤ始めましたが、\n今となっては趣味になっているほど\n好きになっています。笑',
+    desc: '小学4年生からピアノを習い始めました。当初はイヤイヤ始めましたが、今となっては趣味になっているほど好きになっています。笑',
   },
   {
-    age: '〜18歳',
+    age: '~18歳',
     photo: '/third.jpeg',
     bg: '/bg_third.jpeg',
     title: '野球に3年間を費やす',
-    desc: '高校3年間を野球に費やしました。\nボールを触っている時間よりも\n怒られている時間の方が\n長かったと思います。',
+    desc: '高校3年間を野球に費やしました。ボールを触っている時間よりも怒られている時間の方が長かったと思います。',
   },
   {
-    age: '〜現在',
+    age: '~現在',
     photo: '/last.jpg',
     bg: '/bg_now2.jpg',
     title: 'バレットグループへ',
-    desc: '専門学校サンテクノカレッジを卒業し、\nバレットグループへ。\n内定者インターンを始めた時と\nモチベーションは変わりません。',
+    desc: '専門学校サンテクノカレッジを卒業し、バレットグループへ。内定者インターンを始めた時とモチベーションは変わりません。',
   },
 ]
 
-// スタック時の各写真の最終位置（重なり感を出す微妙なオフセット）
+// 写真スタックの最終位置（微妙なオフセットで積み重なり感）
 const stackedPos = [
   { rotation: -4, x: -4, y: 0 },
   { rotation:  3, x:  6, y: -5 },
@@ -43,224 +43,261 @@ const stackedPos = [
   { rotation:  4, x:  4, y: -14 },
 ]
 
-const DOT_TOP_PCT = 45  // ドットの縦位置（画面上から%）
-const N = milestones.length
+// 各ドットのY位置（右パネル上端から%）
+const DOT_TOPS = [16, 38, 61, 84]
 
 export default function History() {
-  const outerRefs    = useRef([])
-  const photoRefs    = useRef(Array.from({ length: N }, () => Array(N).fill(null)))
-  const bgRefs       = useRef(Array.from({ length: N }, () => Array(N).fill(null)))
-  const dotRefs      = useRef([])
-  const branchRefs   = useRef([])
-  const textRefs     = useRef([])
-  const topLineRefs  = useRef([])
-  const botLineRefs  = useRef([])
+  const outerRef      = useRef(null)
+  const bgRefs        = useRef([])
+  const photoRefs     = useRef([])
+  const dotRefs       = useRef([])
+  const branchRefs    = useRef([])
+  const textRefs      = useRef([])
+  const lineSegRefs   = useRef([]) // ドット間3本のライン
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      milestones.forEach((m, i) => {
 
-        // ── 背景初期化 ──
-        milestones.forEach((_, bi) => {
-          const el = bgRefs.current[i][bi]
-          if (el) gsap.set(el, { opacity: bi === i ? 1 : 0 })
+      // ── 初期状態の設定 ──
+      gsap.set(bgRefs.current[0], { opacity: 1 })
+      gsap.set(bgRefs.current.slice(1), { opacity: 0 })
+
+      photoRefs.current.forEach((el, i) => {
+        gsap.set(el, {
+          opacity: 0,
+          y: 480,
+          x: stackedPos[i].x,
+          rotation: stackedPos[i].rotation,
         })
-
-        // ── 写真初期化 ──
-        milestones.forEach((_, pi) => {
-          const el = photoRefs.current[i][pi]
-          if (!el) return
-          if (pi < i) {
-            // すでにスタックに積まれた写真（静的表示）
-            gsap.set(el, { opacity: 1, ...stackedPos[pi] })
-          } else if (pi === i) {
-            // このセクションで登場する写真（下に隠れている）
-            gsap.set(el, { opacity: 0, y: 500, x: stackedPos[pi].x, rotation: stackedPos[pi].rotation })
-          } else {
-            // まだ登場しない写真
-            gsap.set(el, { opacity: 0, y: 500 })
-          }
-        })
-
-        // ── タイムライン要素初期化 ──
-        gsap.set(dotRefs.current[i],    { scale: 0, opacity: 0 })
-        gsap.set(branchRefs.current[i], { scaleX: 0, transformOrigin: 'right center', opacity: 0 })
-        gsap.set(textRefs.current[i],   { opacity: 0, x: 15 })
-        if (i > 0 && topLineRefs.current[i])
-          gsap.set(topLineRefs.current[i], { scaleY: 0, transformOrigin: 'top center' })
-        if (i < N - 1 && botLineRefs.current[i])
-          gsap.set(botLineRefs.current[i], { scaleY: 0, transformOrigin: 'top center' })
-
-        // ── ScrollTrigger タイムライン ──
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: outerRefs.current[i],
-            start: 'top top',
-            end: '+=100%',
-            scrub: 1,
-            pin: true,
-            anticipatePin: 1,
-          },
-        })
-
-        // 写真が下からスライドアップ
-        tl.to(photoRefs.current[i][i], {
-          opacity: 1,
-          y: stackedPos[i].y,
-          duration: 0.28,
-          ease: 'power3.out',
-        }, 0)
-
-        // 上部ライン（セクション2以降：前セクションから引き継ぐ）
-        if (i > 0) {
-          tl.to(topLineRefs.current[i], { scaleY: 1, duration: 0.12 }, 0.05)
-        }
-
-        // ドット出現
-        tl.to(dotRefs.current[i], {
-          scale: 1, opacity: 1,
-          duration: 0.1,
-          ease: 'back.out(2.5)',
-        }, i === 0 ? 0.26 : 0.16)
-
-        // ブランチ＋テキスト
-        tl.to(branchRefs.current[i], { scaleX: 1, opacity: 1, duration: 0.08 }, '<+0.04')
-        tl.to(textRefs.current[i],   { opacity: 1, x: 0,      duration: 0.08 }, '<+0.03')
-
-        // 下部ラインがスクロールにつれて伸びる（最後のセクション以外）
-        if (i < N - 1) {
-          tl.to(botLineRefs.current[i], {
-            scaleY: 1,
-            duration: 0.6,
-            ease: 'none',
-          }, 0.4)
-        }
       })
-    })
+
+      dotRefs.current.forEach(el =>
+        gsap.set(el, { scale: 0, opacity: 0 })
+      )
+      branchRefs.current.forEach(el =>
+        gsap.set(el, { scaleX: 0, transformOrigin: 'left center', opacity: 0 })
+      )
+      textRefs.current.forEach(el =>
+        gsap.set(el, { opacity: 0, x: 14 })
+      )
+      lineSegRefs.current.forEach(el =>
+        gsap.set(el, { scaleY: 0, transformOrigin: 'top center' })
+      )
+
+      // ── スクロール連動タイムライン ──
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: outerRef.current,
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: 1.2,
+        },
+      })
+
+      // =====================
+      // MILESTONE 0 (〜5歳)
+      // =====================
+      // 写真0 が下からスライドアップ
+      tl.to(photoRefs.current[0], {
+        opacity: 1, y: stackedPos[0].y, duration: 0.08, ease: 'power3.out',
+      }, 0)
+      // ドット0 出現
+      tl.to(dotRefs.current[0], { scale: 1, opacity: 1, duration: 0.04, ease: 'back.out(2)' }, 0.06)
+      // ブランチ＋テキスト0
+      tl.to(branchRefs.current[0], { scaleX: 1, opacity: 1, duration: 0.03 }, 0.09)
+      tl.to(textRefs.current[0],   { opacity: 1, x: 0,      duration: 0.03 }, 0.10)
+
+      // =====================
+      // LINE 0: dot0 → dot1
+      // =====================
+      tl.to(lineSegRefs.current[0], { scaleY: 1, duration: 0.18, ease: 'none' }, 0.16)
+      // 背景クロスフェード → bg1
+      tl.to(bgRefs.current[0], { opacity: 0, duration: 0.07 }, 0.24)
+      tl.to(bgRefs.current[1], { opacity: 1, duration: 0.07 }, 0.24)
+      // 写真1 スライドアップ（ラインが伸びる途中で）
+      tl.to(photoRefs.current[1], {
+        opacity: 1, y: stackedPos[1].y, duration: 0.09, ease: 'power3.out',
+      }, 0.26)
+
+      // =====================
+      // MILESTONE 1 (〜10歳)
+      // =====================
+      // テキスト0 フェードアウト
+      tl.to(textRefs.current[0],   { opacity: 0, duration: 0.03 }, 0.35)
+      tl.to(branchRefs.current[0], { opacity: 0, duration: 0.03 }, 0.35)
+      // ドット1 出現
+      tl.to(dotRefs.current[1], { scale: 1, opacity: 1, duration: 0.04, ease: 'back.out(2)' }, 0.35)
+      // ブランチ＋テキスト1
+      tl.to(branchRefs.current[1], { scaleX: 1, opacity: 1, duration: 0.03 }, 0.38)
+      tl.to(textRefs.current[1],   { opacity: 1, x: 0,      duration: 0.03 }, 0.39)
+
+      // =====================
+      // LINE 1: dot1 → dot2
+      // =====================
+      tl.to(lineSegRefs.current[1], { scaleY: 1, duration: 0.18, ease: 'none' }, 0.45)
+      // 背景クロスフェード → bg2
+      tl.to(bgRefs.current[1], { opacity: 0, duration: 0.07 }, 0.53)
+      tl.to(bgRefs.current[2], { opacity: 1, duration: 0.07 }, 0.53)
+      // 写真2 スライドアップ
+      tl.to(photoRefs.current[2], {
+        opacity: 1, y: stackedPos[2].y, duration: 0.09, ease: 'power3.out',
+      }, 0.55)
+
+      // =====================
+      // MILESTONE 2 (〜18歳)
+      // =====================
+      tl.to(textRefs.current[1],   { opacity: 0, duration: 0.03 }, 0.64)
+      tl.to(branchRefs.current[1], { opacity: 0, duration: 0.03 }, 0.64)
+      tl.to(dotRefs.current[2], { scale: 1, opacity: 1, duration: 0.04, ease: 'back.out(2)' }, 0.64)
+      tl.to(branchRefs.current[2], { scaleX: 1, opacity: 1, duration: 0.03 }, 0.67)
+      tl.to(textRefs.current[2],   { opacity: 1, x: 0,      duration: 0.03 }, 0.68)
+
+      // =====================
+      // LINE 2: dot2 → dot3
+      // =====================
+      tl.to(lineSegRefs.current[2], { scaleY: 1, duration: 0.16, ease: 'none' }, 0.73)
+      // 背景クロスフェード → bg3
+      tl.to(bgRefs.current[2], { opacity: 0, duration: 0.07 }, 0.80)
+      tl.to(bgRefs.current[3], { opacity: 1, duration: 0.07 }, 0.80)
+      // 写真3 スライドアップ
+      tl.to(photoRefs.current[3], {
+        opacity: 1, y: stackedPos[3].y, duration: 0.09, ease: 'power3.out',
+      }, 0.82)
+
+      // =====================
+      // MILESTONE 3 (〜現在)
+      // =====================
+      tl.to(textRefs.current[2],   { opacity: 0, duration: 0.03 }, 0.90)
+      tl.to(branchRefs.current[2], { opacity: 0, duration: 0.03 }, 0.90)
+      tl.to(dotRefs.current[3], { scale: 1, opacity: 1, duration: 0.04, ease: 'back.out(2)' }, 0.90)
+      tl.to(branchRefs.current[3], { scaleX: 1, opacity: 1, duration: 0.03 }, 0.93)
+      tl.to(textRefs.current[3],   { opacity: 1, x: 0,      duration: 0.03 }, 0.94)
+      // ここで終了（t=0.97〜1.0 はホールド → スクロール解除）
+
+    }, outerRef)
 
     return () => ctx.revert()
   }, [])
 
   return (
-    <>
-      {milestones.map((m, i) => (
-        <div
-          key={i}
-          ref={el => outerRefs.current[i] = el}
-          style={{ height: '200vh' }}
-        >
-          <div className="h-screen overflow-hidden relative bg-black">
+    // outerRef: スクロール距離を稼ぐ大きなコンテナ（600vh）
+    <div ref={outerRef} style={{ height: '600vh' }}>
 
-            {/* 背景画像 */}
-            {milestones.map((bm, bi) => (
-              <img
-                key={bi}
-                ref={el => { bgRefs.current[i][bi] = el }}
-                src={bm.bg}
-                alt=""
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-            ))}
-            <div className="absolute inset-0 bg-black/65 z-10" />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/40 z-10" />
+      {/* CSS sticky で画面に固定 */}
+      <div className="sticky top-0 h-screen overflow-hidden bg-black">
 
-            {/* コンテンツ */}
-            <div className="relative z-20 h-full flex px-8 md:px-20 pt-14 pb-10">
+        {/* 背景画像 */}
+        {milestones.map((m, i) => (
+          <img
+            key={i}
+            ref={el => bgRefs.current[i] = el}
+            src={m.bg}
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        ))}
+        <div className="absolute inset-0 bg-black/65 z-10" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/40 z-10" />
 
-              {/* セクションタイトル（最初のセクションのみ） */}
-              {i === 0 && (
-                <h2 className="absolute top-14 left-8 md:left-20 font-playfair text-4xl md:text-5xl font-bold text-white z-30">
-                  History
-                </h2>
-              )}
+        {/* コンテンツ */}
+        <div className="relative z-20 h-full flex flex-col px-8 md:px-16 pt-14 pb-10">
 
-              {/* 左：写真スタック */}
-              <div className="flex-1 relative flex items-center justify-center overflow-hidden">
-                {milestones.map((pm, pi) => (
-                  <img
-                    key={pi}
-                    ref={el => { photoRefs.current[i][pi] = el }}
-                    src={pm.photo}
-                    alt={pm.age}
-                    className="absolute rounded-sm shadow-2xl"
-                    style={{
-                      width: 'clamp(220px, 36vw, 400px)',
-                      aspectRatio: '4/3',
-                      objectFit: 'cover',
-                      zIndex: pi + 1,
-                    }}
-                  />
-                ))}
+          {/* タイトル */}
+          <h2 className="font-playfair text-4xl md:text-5xl font-bold text-white shrink-0 mb-6">
+            History
+          </h2>
+
+          {/* メインエリア：写真(左半分) ｜ ライン+テキスト(右半分) */}
+          <div className="flex-1 flex min-h-0">
+
+            {/* 左：写真スタック */}
+            <div className="relative flex items-center justify-center overflow-hidden" style={{ width: '50%' }}>
+              {milestones.map((m, i) => (
+                <img
+                  key={i}
+                  ref={el => photoRefs.current[i] = el}
+                  src={m.photo}
+                  alt={m.age}
+                  className="absolute rounded-sm shadow-2xl"
+                  style={{
+                    width: 'clamp(220px, 38vw, 440px)',
+                    aspectRatio: '4/3',
+                    objectFit: 'cover',
+                    zIndex: i + 1,
+                  }}
+                />
+              ))}
+            </div>
+
+            {/* 右：ライン＋ドット＋ブランチ＋テキスト（一体化） */}
+            <div className="relative flex-1 pl-12">
+
+              {/* 縦ライン（左端に固定） */}
+              <div className="absolute top-0 left-0 h-full" style={{ width: '2px' }}>
+                {milestones.slice(0, -1).map((_, i) => {
+                  const top    = DOT_TOPS[i]
+                  const height = DOT_TOPS[i + 1] - DOT_TOPS[i]
+                  return (
+                    <div
+                      key={i}
+                      ref={el => lineSegRefs.current[i] = el}
+                      className="absolute left-0 w-full bg-white/90"
+                      style={{ top: `${top}%`, height: `${height}%` }}
+                    />
+                  )
+                })}
               </div>
 
-              {/* 右：タイムライン */}
-              <div
-                className="relative shrink-0"
-                style={{ width: '38%', maxWidth: '360px' }}
-              >
-                {/* 縦ライン軌跡 */}
-                <div className="absolute top-0 right-0 h-full" style={{ width: '1.5px' }}>
-                  {/* ガイド（薄い） */}
-                  <div className="absolute inset-0 bg-white/10" />
-
-                  {/* 上部ライン（前セクションから引き継ぎ、セクション1以降） */}
-                  {i > 0 && (
-                    <div
-                      ref={el => topLineRefs.current[i] = el}
-                      className="absolute top-0 left-0 w-full bg-white/70"
-                      style={{ height: `${DOT_TOP_PCT}%` }}
-                    />
-                  )}
-
-                  {/* 下部ライン（スクロールで伸びる） */}
-                  {i < N - 1 && (
-                    <div
-                      ref={el => botLineRefs.current[i] = el}
-                      className="absolute left-0 w-full bg-white/70"
-                      style={{ top: `${DOT_TOP_PCT}%`, height: `${100 - DOT_TOP_PCT}%` }}
-                    />
-                  )}
-                </div>
-
-                {/* マイルストーン（ドット＋ブランチ＋テキスト） */}
+              {/* 各マイルストーン（ドット＋ブランチ＋テキスト） */}
+              {milestones.map((m, i) => (
                 <div
-                  className="absolute right-0 flex items-center flex-row-reverse"
-                  style={{ top: `${DOT_TOP_PCT}%`, transform: 'translateY(-50%)' }}
+                  key={i}
+                  className="absolute"
+                  style={{ top: `${DOT_TOPS[i]}%`, left: 0, transform: 'translateY(-50%)' }}
                 >
-                  {/* ドット */}
+                  {/* ドット（ライン上、中央揃え） */}
                   <div
                     ref={el => dotRefs.current[i] = el}
-                    className="w-3 h-3 rounded-full bg-white border-2 border-white shadow-lg shrink-0 z-10"
-                    style={{ marginRight: '-6px' }}
+                    className="absolute w-4 h-4 rounded-full bg-white shadow-lg z-10"
+                    style={{ left: '-7px', top: '50%', transform: 'translateY(-50%)' }}
                   />
-                  {/* ブランチ */}
-                  <div
-                    ref={el => branchRefs.current[i] = el}
-                    className="shrink-0"
-                    style={{ width: '36px', height: '1px', background: 'rgba(255,255,255,0.5)' }}
-                  />
-                  {/* テキスト */}
-                  <div
-                    ref={el => textRefs.current[i] = el}
-                    className="text-right pr-3"
-                  >
-                    <span className="block text-white/40 text-xs tracking-widest mb-1 font-inter">
-                      {m.age}
-                    </span>
-                    <span className="block text-white font-medium text-sm mb-2 font-noto">
-                      {m.title}
-                    </span>
-                    <span className="block text-white/55 text-xs leading-loose font-noto whitespace-pre-line">
-                      {m.desc}
-                    </span>
+
+                  {/* ブランチ＋テキストの横並び */}
+                  <div className="flex items-center">
+                    {/* ブランチ（ライン直後から伸びる） */}
+                    <div
+                      ref={el => branchRefs.current[i] = el}
+                      className="shrink-0"
+                      style={{
+                        width: '48px',
+                        height: '1px',
+                        background: 'rgba(255,255,255,0.55)',
+                        marginLeft: '2px',
+                      }}
+                    />
+                    {/* テキスト */}
+                    <div
+                      ref={el => textRefs.current[i] = el}
+                      className="pl-5"
+                    >
+                      <span className="block font-playfair text-4xl md:text-5xl font-bold text-white leading-none mb-2">
+                        {m.age}
+                      </span>
+                      <span className="block text-white/80 font-medium text-base mb-2 font-noto">
+                        {m.title}
+                      </span>
+                      <span className="block text-white/55 text-sm leading-relaxed font-noto max-w-[260px]">
+                        {m.desc}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-
+              ))}
             </div>
+
           </div>
         </div>
-      ))}
-    </>
+      </div>
+    </div>
   )
 }
