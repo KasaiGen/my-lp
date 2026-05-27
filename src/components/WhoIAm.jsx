@@ -26,7 +26,7 @@ export default function WhoIAm() {
       <div className="text-center">
         <h2
           ref={titleRef}
-          className="font-playfair text-4xl md:text-5xl font-bold text-white mb-8"
+          className="text-4xl md:text-5xl font-bold text-white mb-8"
         >
           Who I Am ?
         </h2>

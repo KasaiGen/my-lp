@@ -9,6 +9,7 @@ export default {
       fontFamily: {
         'playfair': ['Playfair Display', 'serif'],
         'noto': ['Noto Sans JP', 'sans-serif'],
+        'noto-serif': ['Noto Serif JP', 'serif'],
         'inter': ['Inter', 'sans-serif'],
       },
     },

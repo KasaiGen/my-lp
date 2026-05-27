@@ -66,7 +66,7 @@ export default function MyVision() {
 
   return (
     <section ref={sectionRef} className="bg-black min-h-screen py-28 md:py-36 px-8 md:px-20">
-      <h2 className="font-playfair text-4xl md:text-5xl font-bold text-white mb-20">
+      <h2 className="text-4xl md:text-5xl font-bold text-white mb-20">
         My Near-term vision
       </h2>
 
@@ -74,13 +74,13 @@ export default function MyVision() {
       <div className="text-center mb-24 md:mb-32">
         <p
           ref={subRef}
-          className="text-white/40 text-xs tracking-[0.4em] mb-4 font-inter"
+          className="text-white/40 text-xs tracking-[0.4em] mb-4"
         >
           技術力もマネジメントもカバーできる存在
         </p>
         <h3
           ref={headlineRef}
-          className="font-noto text-4xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-tight"
+          className="text-4xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-tight"
         >
           プレイングPMになる
         </h3>
@@ -94,13 +94,13 @@ export default function MyVision() {
             ref={el => stepsRef.current[i] = el}
             className="border-t border-white/20 pt-8"
           >
-            <span className="block text-white/25 text-xs tracking-widest mb-4 font-inter">
+            <span className="block text-white/25 text-xs tracking-widest mb-4">
               {step.num}
             </span>
-            <h4 className="text-white font-medium text-lg mb-3 font-noto">
+            <h4 className="text-white font-medium text-lg mb-3">
               {step.title}
             </h4>
-            <p className="text-white/50 text-sm leading-relaxed font-noto">
+            <p className="text-white/50 text-sm leading-relaxed">
               {step.desc}
             </p>
           </div>

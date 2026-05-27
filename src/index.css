@@ -15,7 +15,7 @@ html {
 body {
   background: #000;
   color: #fff;
-  font-family: 'Inter', 'Noto Sans JP', sans-serif;
+  font-family: 'Noto Serif JP', serif;
   /* overflow: clip は sticky を壊さず横スクロールを防ぐ */
   overflow-x: clip;
 }

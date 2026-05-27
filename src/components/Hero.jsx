@@ -61,7 +61,7 @@ export default function Hero() {
       <div className="relative z-20 text-center">
         <h1
           ref={nameRef}
-          className="font-playfair text-6xl md:text-8xl font-bold text-white tracking-widest"
+          className="text-6xl md:text-8xl font-bold text-white tracking-widest"
           style={{ textShadow: '0 2px 40px rgba(0,0,0,0.8)' }}
         >
           Kasai Genta
