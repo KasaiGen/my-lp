@@ -7,8 +7,8 @@ gsap.registerPlugin(ScrollTrigger)
 const milestones = [
   {
     age: '~5歳',
-    photo: '/first.jpeg',
-    bg: '/bg_first.jpeg',
+    photo: '/mychildview.jpeg',
+    bg: '/child.jpeg',
     title: '仮面ライダーに夢中',
     desc: '仮面ライダー、ウルトラマンをよく観ていて、剣や棒が好きでした。姉と喧嘩をし、そのときにつけられた顔の傷が今も残っています。（喧嘩理由：自分が可愛こぶっている姿に姉が腹を立てたため）',
   },
@@ -75,7 +75,7 @@ export default function History() {
         gsap.set(el, { scale: 0, opacity: 0 })
       )
       branchRefs.current.forEach(el =>
-        gsap.set(el, { scaleX: 0, transformOrigin: 'left center', opacity: 0 })
+        gsap.set(el, { scaleX: 0, transformOrigin: 'right center', opacity: 0 })
       )
       textRefs.current.forEach(el =>
         gsap.set(el, { opacity: 0, x: 14 })
@@ -203,7 +203,7 @@ export default function History() {
         <div className="relative z-20 h-full flex flex-col px-8 md:px-16 pt-14 pb-10">
 
           {/* タイトル */}
-          <h2 className="font-playfair text-4xl md:text-5xl font-bold text-white shrink-0 mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold text-white shrink-0 mb-6">
             History
           </h2>
 
@@ -229,11 +229,11 @@ export default function History() {
               ))}
             </div>
 
-            {/* 右：ライン＋ドット＋ブランチ＋テキスト（一体化） */}
-            <div className="relative flex-1 pl-12">
+            {/* 右：テキスト（左寄り）＋ ライン（右端） */}
+            <div className="relative flex-1 pr-12">
 
-              {/* 縦ライン（左端に固定） */}
-              <div className="absolute top-0 left-0 h-full" style={{ width: '2px' }}>
+              {/* 縦ライン（右端に固定） */}
+              <div className="absolute top-0 right-0 h-full" style={{ width: '2px' }}>
                 {milestones.slice(0, -1).map((_, i) => {
                   const top    = DOT_TOPS[i]
                   const height = DOT_TOPS[i + 1] - DOT_TOPS[i]
@@ -248,23 +248,23 @@ export default function History() {
                 })}
               </div>
 
-              {/* 各マイルストーン（ドット＋ブランチ＋テキスト） */}
+              {/* 各マイルストーン（テキスト＋ブランチ＋ドット） */}
               {milestones.map((m, i) => (
                 <div
                   key={i}
                   className="absolute"
-                  style={{ top: `${DOT_TOPS[i]}%`, left: 0, transform: 'translateY(-50%)' }}
+                  style={{ top: `${DOT_TOPS[i]}%`, right: 0, transform: 'translateY(-50%)' }}
                 >
-                  {/* ドット（ライン上、中央揃え） */}
+                  {/* ドット（ライン上） */}
                   <div
                     ref={el => dotRefs.current[i] = el}
                     className="absolute w-4 h-4 rounded-full bg-white shadow-lg z-10"
-                    style={{ left: '-7px', top: '50%', transform: 'translateY(-50%)' }}
+                    style={{ right: '-7px', top: '50%', transform: 'translateY(-50%)' }}
                   />
 
-                  {/* ブランチ＋テキストの横並び */}
-                  <div className="flex items-center">
-                    {/* ブランチ（ライン直後から伸びる） */}
+                  {/* テキスト＋ブランチの横並び（右端のラインに向かって右揃え） */}
+                  <div className="flex items-center flex-row-reverse">
+                    {/* ブランチ（ラインから左へ伸びる） */}
                     <div
                       ref={el => branchRefs.current[i] = el}
                       className="shrink-0"
@@ -272,21 +272,21 @@ export default function History() {
                         width: '48px',
                         height: '1px',
                         background: 'rgba(255,255,255,0.55)',
-                        marginLeft: '2px',
+                        marginRight: '2px',
                       }}
                     />
-                    {/* テキスト */}
+                    {/* テキスト（左揃え） */}
                     <div
                       ref={el => textRefs.current[i] = el}
-                      className="pl-5"
+                      className="pr-5 text-left"
                     >
-                      <span className="block font-playfair text-4xl md:text-5xl font-bold text-white leading-none mb-2">
+                      <span className="block text-4xl md:text-5xl font-bold text-white leading-none mb-2">
                         {m.age}
                       </span>
-                      <span className="block text-white/80 font-medium text-base mb-2 font-noto">
+                      <span className="block text-white/80 font-medium text-base mb-2">
                         {m.title}
                       </span>
-                      <span className="block text-white/55 text-sm leading-relaxed font-noto max-w-[260px]">
+                      <span className="block text-white/55 text-sm leading-relaxed max-w-[260px]">
                         {m.desc}
                       </span>
                     </div>
