@@ -141,7 +141,7 @@ function MyProjectDesktop() {
           <div className="absolute inset-0 bg-black/75" />
         </div>
 
-        <div className="relative z-10 h-full flex flex-col px-16 pt-14 pb-10">
+        <div className="relative z-10 h-full flex flex-col px-8 lg:px-16 pt-14 pb-10">
           <h2 className="text-5xl font-bold text-white shrink-0 mb-6">My Project</h2>
 
           <div className="flex-1 flex min-h-0">
@@ -178,7 +178,7 @@ function MyProjectDesktop() {
               {loopImages.map((img, i) => (
                 <div key={i} ref={el => imgRefs.current[i] = el}
                   className="flex-shrink-0 rounded-2xl overflow-hidden"
-                  style={{ width: '560px' }}>
+                  style={{ width: 'clamp(260px, 38vw, 560px)' }}>
                   <img src={img.src} alt={img.label} className="w-full h-auto object-contain block" />
                 </div>
               ))}
