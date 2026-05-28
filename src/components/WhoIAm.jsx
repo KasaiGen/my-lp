@@ -46,7 +46,7 @@ export default function WhoIAm() {
   return (
     <section ref={sectionRef} className="bg-black py-24 md:py-32 px-8 md:px-20">
       <h2 ref={headingRef} className="text-4xl md:text-5xl font-bold text-white mb-16 md:mb-24">
-        Who I Am
+        Who I Am ？
       </h2>
 
       <div ref={contentRef} className="flex flex-col md:flex-row gap-16 md:gap-0">
