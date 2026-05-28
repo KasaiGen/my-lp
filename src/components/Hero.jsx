@@ -55,7 +55,7 @@ export default function Hero() {
         {/* 薄い黒オーバーレイ */}
         <div className="absolute inset-0 bg-black/80 z-10" />
         {/* 上下グラデーション */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60 z-10" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black z-10" />
       </div>
 
       {/* テキスト */}

@@ -142,7 +142,10 @@ function ThirdCreedItem() {
 
 export default function MyCreeds() {
   return (
-    <section className="bg-black py-24 md:py-32 px-8 md:px-20">
+    <section className="relative bg-black py-24 md:py-32 px-8 md:px-20">
+      {/* 上端：MyProjectの画像から黒へ溶け込む（MyProjectがすでに黒にフェードするので自然につながる） */}
+      <div className="absolute top-0 left-0 right-0 h-24 pointer-events-none"
+        style={{ background: 'linear-gradient(to bottom, #000, transparent)', zIndex: 10 }} />
       <h2 className="text-4xl md:text-5xl font-bold text-white mb-20 md:mb-28">
         My Creeds
       </h2>

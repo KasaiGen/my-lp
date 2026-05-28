@@ -127,7 +127,13 @@ function MyProjectDesktop() {
   }, [])
 
   return (
-    <div ref={outerRef} style={{ height: '100vh' }}>
+    <div ref={outerRef} style={{ height: '100vh', position: 'relative' }}>
+      {/* 上端：Historyの黒からMyProjectへ溶け込む */}
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '160px',
+        background: 'linear-gradient(to bottom, #000, transparent)', zIndex: 200, pointerEvents: 'none' }} />
+      {/* 下端：MyProjectからMyCreeds（黒）へ溶け込む */}
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '160px',
+        background: 'linear-gradient(to top, #000, transparent)', zIndex: 200, pointerEvents: 'none' }} />
       <div className="sticky top-0 h-screen overflow-hidden">
         {/* 背景 */}
         <div className="absolute inset-0">

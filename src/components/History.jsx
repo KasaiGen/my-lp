@@ -186,7 +186,13 @@ function HistoryDesktop() {
   }, [])
 
   return (
-    <div ref={outerRef} style={{ height: '600vh' }}>
+    <div ref={outerRef} style={{ height: '600vh', position: 'relative' }}>
+      {/* 上端：直前セクション（黒）からHistoryへ溶け込む */}
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '160px',
+        background: 'linear-gradient(to bottom, #000, transparent)', zIndex: 200, pointerEvents: 'none' }} />
+      {/* 下端：HistoryからMyProjectへ溶け込む */}
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '160px',
+        background: 'linear-gradient(to top, #000, transparent)', zIndex: 200, pointerEvents: 'none' }} />
       <div className="sticky top-0 h-screen overflow-hidden bg-black">
         {milestones.map((m, i) => (
           <img key={i} ref={el => bgRefs.current[i] = el} src={m.bg} alt=""
