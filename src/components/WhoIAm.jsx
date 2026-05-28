@@ -10,7 +10,7 @@ const profile = [
   { label: 'Favorite Artist', value: 'betcover!!' },
 ]
 
-const skills = ['TypeScript', 'React', 'Next.js', 'PHP', 'Laravel']
+const skills = ['TypeScript', 'React', 'Next.js', 'PHP', 'Laravel', 'Supabase', 'Prisma']
 
 export default function WhoIAm() {
   const sectionRef = useRef(null)
