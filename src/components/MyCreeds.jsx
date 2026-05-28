@@ -150,7 +150,7 @@ export default function MyCreeds() {
         My Creeds
       </h2>
 
-      <div className="flex flex-col gap-28 md:gap-36 max-w-6xl">
+      <div className="flex flex-col gap-28 md:gap-36 max-w-6xl mx-auto">
         <FirstCreedItem />
         <SecondCreedItem />
         <ThirdCreedItem />
