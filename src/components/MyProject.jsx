@@ -63,9 +63,10 @@ function MyProjectMobile() {
 }
 
 function MyProjectDesktop() {
-  const outerRef = useRef(null)
-  const trackRef = useRef(null)
-  const imgRefs  = useRef([])
+  const outerRef      = useRef(null)
+  const trackRef      = useRef(null)
+  const imgRefs       = useRef([])
+  const leftPanelRef  = useRef(null)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -85,6 +86,8 @@ function MyProjectDesktop() {
 
         // ピン留め中に画像を1周させるだけのスクロール量を確保
         outerRef.current.style.height = `${vh + oneSetH}px`
+        // 高さ変更後に全ScrollTriggerの位置を再計算（下のセクションのアニメーションがずれるのを防ぐ）
+        ScrollTrigger.refresh()
 
         gsap.set(track, { xPercent: -50, y: initY })
 
@@ -97,7 +100,22 @@ function MyProjectDesktop() {
         }
 
         updateScales(initY)
-        track.style.visibility = 'visible'
+
+        // コンテンツの入場アニメーション：セクションがピン留めされた瞬間にディゾルブイン
+        gsap.set(track, { visibility: 'visible', opacity: 0 })
+        if (leftPanelRef.current) gsap.set(leftPanelRef.current, { opacity: 0 })
+
+        ScrollTrigger.create({
+          trigger: outerRef.current,
+          start: 'top top',
+          once: true,
+          onEnter() {
+            if (leftPanelRef.current) {
+              gsap.to(leftPanelRef.current, { opacity: 1, duration: 1.0, ease: 'power2.inOut' })
+            }
+            gsap.to(track, { opacity: 1, duration: 1.0, delay: 0.3, ease: 'power2.inOut' })
+          },
+        })
 
         // pin: true は使わず CSS sticky に任せる（History と同パターン）
         // pin: true だと GSAP がスペーサーを二重挿入して黒画面になる
@@ -146,7 +164,7 @@ function MyProjectDesktop() {
 
           <div className="flex-1 flex min-h-0">
             {/* 左：説明 */}
-            <div className="flex flex-col justify-center w-[48%] pr-12">
+            <div ref={leftPanelRef} className="flex flex-col justify-center w-[48%] pr-12">
               <div className="flex items-center gap-5 mb-9">
                 <span className="text-5xl 2xl:text-7xl font-bold text-white tracking-tight leading-none">Crowd Map</span>
                 <img src="/footprints.svg" alt="" className="w-14 h-14 2xl:w-20 2xl:h-20 flex-shrink-0"

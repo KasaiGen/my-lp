@@ -14,29 +14,17 @@ const skills = ['TypeScript', 'React', 'Next.js', 'PHP', 'Laravel']
 
 export default function WhoIAm() {
   const sectionRef = useRef(null)
-  const headingRef = useRef(null)
   const contentRef = useRef(null)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from(headingRef.current, {
-        opacity: 0,
-        y: 40,
-        duration: 1,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 70%',
-        },
-      })
       gsap.from(contentRef.current, {
         opacity: 0,
-        y: 30,
-        duration: 1,
-        ease: 'power3.out',
+        duration: 1.2,
+        ease: 'power2.inOut',
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top 60%',
+          start: 'top center',
         },
       })
     }, sectionRef)
@@ -45,7 +33,7 @@ export default function WhoIAm() {
 
   return (
     <section ref={sectionRef} className="bg-black py-24 md:py-32 px-8 md:px-20">
-      <h2 ref={headingRef} className="text-4xl md:text-5xl 22xl:text-7xl font-bold text-white mb-16 md:mb-24">
+      <h2 className="text-4xl md:text-5xl 2xl:text-7xl font-bold text-white mb-16 md:mb-24">
         Who I Am ？
       </h2>
 

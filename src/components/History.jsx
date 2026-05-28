@@ -10,7 +10,7 @@ const milestones = [
     photo: '/mychildview.jpeg',
     bg: '/child.jpeg',
     title: '仮面ライダーに夢中',
-    desc: '仮面ライダー、ウルトラマンをよく観ていて、剣や棒が好きでした。姉と喧嘩をし、そのときにつけられた顔の傷が今も残っています。（喧嘩理由：自分が可愛こぶっている姿に姉が腹を立てたため）',
+    desc: '仮面ライダー、ウルトラマンをよく観ていて、剣や棒が好きでした。姉と喧嘩をし、そのときにつけられた顔の傷が今も残っています。\n（喧嘩理由：自分が可愛こぶっている姿に姉が腹を立てたため）',
   },
   {
     age: '~10歳',
@@ -31,7 +31,7 @@ const milestones = [
     photo: '/last.jpg',
     bg: '/bg_now2.jpg',
     title: 'バレットグループへ',
-    desc: '専門学校サンテクノカレッジを卒業し、バレットグループへ。内定者インターンを始めた時とモチベーションは変わりません。',
+    desc: '専門学校サンテクノカレッジを卒業し、バレットグループへ。\n内定者インターンを始めた時とモチベーションは変わりません。',
   },
 ]
 
@@ -189,7 +189,7 @@ function HistoryDesktop() {
                     <div ref={el => textRefs.current[i] = el} className="pl-2 text-left shrink-0">
                       <span className="block text-xl md:text-4xl lg:text-6xl font-bold text-white leading-none mb-1 md:mb-3">{m.age}</span>
                       <span className="block text-white/80 font-medium text-xs md:text-sm lg:text-base md:mb-3">{m.title}</span>
-                      <span className="hidden md:block text-white/55 leading-relaxed max-w-[220px] lg:max-w-[340px] 2xl:max-w-[480px]" style={{ fontSize: '18px' }}>{m.desc}</span>
+                      <span className="hidden md:block text-white/55 leading-relaxed whitespace-pre-line max-w-[220px] lg:max-w-[340px] 2xl:max-w-[480px]" style={{ fontSize: '14px' }}>{m.desc}</span>
                     </div>
                     <div ref={el => branchRefs.current[i] = el}
                       style={{ flex: 1, minWidth: '12px', height: '1px', background: 'rgba(255,255,255,0.5)' }} />

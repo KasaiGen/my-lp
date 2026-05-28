@@ -38,15 +38,16 @@ export default function AoteruCreed({ itemRef, textRef }) {
         },
       })
 
-      // 画像が完全に見えたらコメント入り画像にディゾルブ
+      // ベース画像が出た後にオーバーレイをディゾルブイン
       gsap.set(commentRef.current, { opacity: 0 })
       gsap.to(commentRef.current, {
         opacity: 1,
         duration: 1.0,
+        delay: 1.0,
         ease: 'power2.inOut',
         scrollTrigger: {
-          trigger: wrapRef.current,
-          start: 'top 40%',
+          trigger: itemRef.current,
+          start: 'top 75%',
           toggleActions: 'play none none none',
         },
       })

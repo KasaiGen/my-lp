@@ -39,10 +39,11 @@ export default function ThirdCreed({ itemRef, textRef }) {
       gsap.to(commentRef.current, {
         opacity: 1,
         duration: 1.0,
+        delay: 1.0,
         ease: 'power2.inOut',
         scrollTrigger: {
-          trigger: wrapRef.current,
-          start: 'top 60%',
+          trigger: itemRef.current,
+          start: 'top 75%',
           toggleActions: 'play none none none',
         },
       })
