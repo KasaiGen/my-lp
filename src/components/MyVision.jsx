@@ -32,31 +32,26 @@ export default function MyVision() {
     const ctx = gsap.context(() => {
       gsap.from(subRef.current, {
         opacity: 0,
-        y: 20,
         duration: 0.8,
-        scrollTrigger: { trigger: sectionRef.current, start: 'top 75%' },
+        ease: 'power2.inOut',
+        scrollTrigger: { trigger: sectionRef.current, start: 'top center' },
       })
 
       gsap.from(headlineRef.current, {
         opacity: 0,
-        y: 40,
-        duration: 1,
+        duration: 1.0,
         delay: 0.2,
-        ease: 'power3.out',
-        scrollTrigger: { trigger: sectionRef.current, start: 'top 75%' },
+        ease: 'power2.inOut',
+        scrollTrigger: { trigger: sectionRef.current, start: 'top center' },
       })
 
       stepsRef.current.forEach((el, i) => {
         gsap.from(el, {
           opacity: 0,
-          y: 30,
           duration: 0.7,
           delay: i * 0.15,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 85%',
-          },
+          ease: 'power2.inOut',
+          scrollTrigger: { trigger: sectionRef.current, start: 'top center' },
         })
       })
     }, sectionRef)
