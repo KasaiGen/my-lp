@@ -56,14 +56,14 @@ export default function ThirdCreed({ itemRef, textRef }) {
     <div ref={wrapRef} className="w-full md:w-[45%] flex-shrink-0">
       <div className="relative max-w-[420px] mx-auto">
         <img
-          src="/lookback.png"
+          src={`${import.meta.env.BASE_URL}lookback.png`}
           alt=""
           className="w-full object-contain rounded-sm block"
           style={{ filter: 'grayscale(10%) contrast(105%)' }}
         />
         <img
           ref={commentRef}
-          src="/lookback_comment.png"
+          src={`${import.meta.env.BASE_URL}lookback_comment.png`}
           alt=""
           className="absolute top-0 left-0 w-full h-full object-contain rounded-sm"
           style={{ filter: 'grayscale(10%) contrast(105%)', opacity: 0 }}

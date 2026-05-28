@@ -61,14 +61,14 @@ export default function AoteruCreed({ itemRef, textRef }) {
       <div className="relative w-full max-w-[420px] mx-auto">
         <img
           ref={baseRef}
-          src="/aoteru.png"
+          src={`${import.meta.env.BASE_URL}aoteru.png`}
           alt=""
           className="w-full object-contain rounded-sm block"
           style={{ filter: 'grayscale(10%) contrast(105%)' }}
         />
         <img
           ref={commentRef}
-          src="/aoteru_comment.jpeg"
+          src={`${import.meta.env.BASE_URL}aoteru_comment.jpeg`}
           alt=""
           className="absolute top-0 left-0 w-full h-full object-contain rounded-sm"
           style={{ filter: 'grayscale(10%) contrast(105%)', opacity: 0 }}

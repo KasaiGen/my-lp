@@ -1,10 +1,12 @@
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 
+const base = import.meta.env.BASE_URL
+
 const bgImages = [
-  '/bg_1.jpg', '/bg_2.jpg', '/bg_4.jpg', '/bg_5.jpg',
-  '/bg_6.jpg', '/bg_7.jpg', '/bg_8.jpg', '/bg_9.jpg',
-  '/bg_10.jpg','/bg_11.jpg',
+  `${base}bg_1.jpg`, `${base}bg_2.jpg`, `${base}bg_4.jpg`, `${base}bg_5.jpg`,
+  `${base}bg_6.jpg`, `${base}bg_7.jpg`, `${base}bg_8.jpg`, `${base}bg_9.jpg`,
+  `${base}bg_10.jpg`, `${base}bg_11.jpg`,
 ]
 
 export default function Hero() {

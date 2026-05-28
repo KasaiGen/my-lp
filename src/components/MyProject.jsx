@@ -4,12 +4,14 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
 
+const base = import.meta.env.BASE_URL
+
 const images = [
-  { src: '/mypjt_all.png',   label: 'Map View' },
-  { src: '/mypjt_feed.png',  label: 'Feed' },
-  { src: '/mypjt_modal.png', label: 'Detail' },
-  { src: '/mypjt_title.png', label: 'Top' },
-  { src: '/mypjt_trend.png', label: 'Trend' },
+  { src: `${base}mypjt_all.png`,   label: 'Map View' },
+  { src: `${base}mypjt_feed.png`,  label: 'Feed' },
+  { src: `${base}mypjt_modal.png`, label: 'Detail' },
+  { src: `${base}mypjt_title.png`, label: 'Top' },
+  { src: `${base}mypjt_trend.png`, label: 'Trend' },
 ]
 
 const bullets = [
@@ -25,14 +27,14 @@ function MyProjectMobile() {
   return (
     <section className="relative py-20 px-6">
       <div className="absolute inset-0 z-0">
-        <img src="/mypjt_background.png" alt="" className="w-full h-full object-cover" />
+        <img src={`${base}mypjt_background.png`} alt="" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-black/70" />
       </div>
       <div className="relative z-10">
         <p className="text-white/40 text-xs tracking-[0.3em] uppercase mb-6">My Project</p>
         <div className="flex items-center gap-4 mb-8">
           <h2 className="text-4xl font-bold text-white tracking-tight leading-none">Crowd Map</h2>
-          <img src="/footprints.svg" alt="" className="w-10 h-10 flex-shrink-0"
+          <img src={`${base}footprints.svg`} alt="" className="w-10 h-10 flex-shrink-0"
             style={{ filter: 'invert(1) brightness(2)' }} />
         </div>
         <ul className="space-y-3 mb-6">
@@ -155,7 +157,7 @@ function MyProjectDesktop() {
       <div className="sticky top-0 h-screen overflow-hidden">
         {/* 背景 */}
         <div className="absolute inset-0">
-          <img src="/mypjt_background.png" alt="" className="w-full h-full object-cover" />
+          <img src={`${base}mypjt_background.png`} alt="" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-black/75" />
         </div>
 
@@ -167,7 +169,7 @@ function MyProjectDesktop() {
             <div ref={leftPanelRef} className="flex flex-col justify-center w-[48%] pr-12">
               <div className="flex items-center gap-5 mb-9">
                 <span className="text-5xl 2xl:text-7xl font-bold text-white tracking-tight leading-none">Crowd Map</span>
-                <img src="/footprints.svg" alt="" className="w-14 h-14 2xl:w-20 2xl:h-20 flex-shrink-0"
+                <img src={`${base}footprints.svg`} alt="" className="w-14 h-14 2xl:w-20 2xl:h-20 flex-shrink-0"
                   style={{ filter: 'invert(1) brightness(2)' }} />
               </div>
               <ul className="space-y-4 mb-8">

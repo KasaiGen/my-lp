@@ -4,32 +4,34 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
 
+const base = import.meta.env.BASE_URL
+
 const milestones = [
   {
     age: '~5歳',
-    photo: '/mychildview.jpeg',
-    bg: '/child.jpeg',
+    photo: `${base}mychildview.jpeg`,
+    bg: `${base}child.jpeg`,
     title: '仮面ライダーに夢中',
     desc: '仮面ライダー、ウルトラマンをよく観ていて、剣や棒が好きでした。姉と喧嘩をし、そのときにつけられた顔の傷が今も残っています。\n（喧嘩理由：自分が可愛こぶっている姿に姉が腹を立てたため）',
   },
   {
     age: '~10歳',
-    photo: '/second.jpeg',
-    bg: '/bg_second.jpg',
+    photo: `${base}second.jpeg`,
+    bg: `${base}bg_second.jpg`,
     title: 'ピアノとの出会い',
     desc: '小学4年生からピアノを習い始めました。当初はイヤイヤ始めましたが、今となっては趣味になっているほど好きになっています。笑',
   },
   {
     age: '~18歳',
-    photo: '/third.jpeg',
-    bg: '/bg_third.jpeg',
+    photo: `${base}third.jpeg`,
+    bg: `${base}bg_third.jpeg`,
     title: '野球に3年間を費やす',
     desc: '高校3年間を野球に費やしました。ボールを触っている時間よりも怒られている時間の方が長かったと思います。',
   },
   {
     age: '~現在',
-    photo: '/last.jpg',
-    bg: '/bg_now2.jpg',
+    photo: `${base}last.jpg`,
+    bg: `${base}bg_now2.jpg`,
     title: 'バレットグループへ',
     desc: '専門学校サンテクノカレッジを卒業し、バレットグループへ。\n内定者インターンを始めた時とモチベーションは変わりません。',
   },
