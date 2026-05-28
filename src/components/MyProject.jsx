@@ -35,7 +35,7 @@ function MyProjectMobile() {
           <img src="/footprints.svg" alt="" className="w-10 h-10 flex-shrink-0"
             style={{ filter: 'invert(1) brightness(2)' }} />
         </div>
-        <ul className="space-y-3 mb-10">
+        <ul className="space-y-3 mb-6">
           {bullets.map((b, i) => (
             <li key={i} className="flex items-start gap-3 text-white/70 text-sm leading-relaxed">
               <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-white/60 flex-shrink-0" />
@@ -43,6 +43,13 @@ function MyProjectMobile() {
             </li>
           ))}
         </ul>
+        <div className="flex flex-wrap gap-2 mb-10">
+          {['Next.js', 'LIFF', 'Google Maps Platform'].map((tech, i) => (
+            <span key={i} className="px-3 py-1 text-xs tracking-wider text-white/55 border border-white/20 rounded-full">
+              {tech}
+            </span>
+          ))}
+        </div>
         <div className="flex flex-col gap-5">
           {images.map((img, i) => (
             <div key={i} className="rounded-2xl overflow-hidden">
@@ -120,32 +127,47 @@ function MyProjectDesktop() {
   }, [])
 
   return (
-    <div ref={outerRef} style={{ height: '100vh' }}>
+    <div ref={outerRef} style={{ height: '100vh', position: 'relative' }}>
+      {/* 上端：Historyの黒からMyProjectへ溶け込む */}
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '160px',
+        background: 'linear-gradient(to bottom, #000, transparent)', zIndex: 200, pointerEvents: 'none' }} />
+      {/* 下端：MyProjectからMyCreeds（黒）へ溶け込む */}
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '160px',
+        background: 'linear-gradient(to top, #000, transparent)', zIndex: 200, pointerEvents: 'none' }} />
       <div className="sticky top-0 h-screen overflow-hidden">
         {/* 背景 */}
         <div className="absolute inset-0">
           <img src="/mypjt_background.png" alt="" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-black/45" />
+          <div className="absolute inset-0 bg-black/75" />
         </div>
 
-        <div className="relative z-10 h-full flex px-20">
-          {/* 左：タイトル＋説明 */}
-          <div className="flex flex-col justify-center w-[48%] pr-12">
-            <p className="text-white/40 text-xs tracking-[0.3em] uppercase mb-8">My Project</p>
-            <div className="flex items-center gap-5 mb-9">
-              <h2 className="text-7xl font-bold text-white tracking-tight leading-none">Crowd Map</h2>
-              <img src="/footprints.svg" alt="" className="w-14 h-14 flex-shrink-0"
-                style={{ filter: 'invert(1) brightness(2)' }} />
+        <div className="relative z-10 h-full flex flex-col px-8 lg:px-16 pt-14 pb-10">
+          <h2 className="text-5xl 2xl:text-7xl font-bold text-white shrink-0 mb-6">My Project</h2>
+
+          <div className="flex-1 flex min-h-0">
+            {/* 左：説明 */}
+            <div className="flex flex-col justify-center w-[48%] pr-12">
+              <div className="flex items-center gap-5 mb-9">
+                <span className="text-5xl 2xl:text-7xl font-bold text-white tracking-tight leading-none">Crowd Map</span>
+                <img src="/footprints.svg" alt="" className="w-14 h-14 2xl:w-20 2xl:h-20 flex-shrink-0"
+                  style={{ filter: 'invert(1) brightness(2)' }} />
+              </div>
+              <ul className="space-y-4 mb-8">
+                {bullets.map((b, i) => (
+                  <li key={i} className="flex items-start gap-3 text-white/75 text-sm 2xl:text-lg leading-relaxed">
+                    <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-white/60 flex-shrink-0" />
+                    {b}
+                  </li>
+                ))}
+              </ul>
+              <div className="flex flex-wrap gap-2 2xl:gap-3">
+                {['Next.js', 'LIFF', 'Google Maps Platform'].map((tech, i) => (
+                  <span key={i} className="px-3 py-1 2xl:px-5 2xl:py-2 text-xs 2xl:text-sm tracking-wider text-white/55 border border-white/20 rounded-full">
+                    {tech}
+                  </span>
+                ))}
+              </div>
             </div>
-            <ul className="space-y-4">
-              {bullets.map((b, i) => (
-                <li key={i} className="flex items-start gap-3 text-white/75 text-sm leading-relaxed">
-                  <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-white/60 flex-shrink-0" />
-                  {b}
-                </li>
-              ))}
-            </ul>
-          </div>
 
           {/* 右：スクロール連動ループ画像エリア */}
           <div className="flex-1 relative overflow-hidden">
@@ -156,11 +178,12 @@ function MyProjectDesktop() {
               {loopImages.map((img, i) => (
                 <div key={i} ref={el => imgRefs.current[i] = el}
                   className="flex-shrink-0 rounded-2xl overflow-hidden"
-                  style={{ width: '360px' }}>
+                  style={{ width: 'clamp(260px, 38vw, 720px)' }}>
                   <img src={img.src} alt={img.label} className="w-full h-auto object-contain block" />
                 </div>
               ))}
             </div>
+          </div>
           </div>
         </div>
       </div>

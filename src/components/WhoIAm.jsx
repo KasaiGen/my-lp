@@ -45,18 +45,18 @@ export default function WhoIAm() {
 
   return (
     <section ref={sectionRef} className="bg-black py-24 md:py-32 px-8 md:px-20">
-      <h2 ref={headingRef} className="text-4xl md:text-5xl font-bold text-white mb-16 md:mb-24">
-        Who I Am
+      <h2 ref={headingRef} className="text-4xl md:text-5xl 22xl:text-7xl font-bold text-white mb-16 md:mb-24">
+        Who I Am ？
       </h2>
 
       <div ref={contentRef} className="flex flex-col md:flex-row gap-16 md:gap-0">
         {/* プロフィール */}
         <div className="md:w-1/2">
-          <div className="space-y-10">
+          <div className="space-y-10 2xl:space-y-14">
             {profile.map(({ label, value }) => (
               <div key={label}>
-                <p className="text-white/35 text-xs tracking-[0.25em] uppercase mb-2">{label}</p>
-                <p className="text-white text-2xl font-semibold">{value}</p>
+                <p className="text-white/35 text-xs 2xl:text-sm tracking-[0.25em] uppercase mb-2">{label}</p>
+                <p className="text-white text-2xl 2xl:text-4xl font-semibold">{value}</p>
               </div>
             ))}
           </div>
@@ -64,11 +64,11 @@ export default function WhoIAm() {
 
         {/* スキル */}
         <div className="md:w-1/2">
-          <p className="text-white/35 text-xs tracking-[0.25em] uppercase mb-5">My Skills</p>
-          <div className="flex flex-wrap gap-3">
+          <p className="text-white/35 text-xs 2xl:text-sm tracking-[0.25em] uppercase mb-5">My Skills</p>
+          <div className="flex flex-wrap gap-3 2xl:gap-4">
             {skills.map((s) => (
               <span key={s}
-                className="px-4 py-2 text-sm text-white/65 border border-white/20 rounded-full tracking-wide">
+                className="px-4 py-2 2xl:px-6 2xl:py-3 text-sm 2xl:text-lg text-white/65 border border-white/20 rounded-full tracking-wide">
                 {s}
               </span>
             ))}
