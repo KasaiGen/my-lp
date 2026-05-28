@@ -142,27 +142,27 @@ function MyProjectDesktop() {
         </div>
 
         <div className="relative z-10 h-full flex flex-col px-8 lg:px-16 pt-14 pb-10">
-          <h2 className="text-5xl font-bold text-white shrink-0 mb-6">My Project</h2>
+          <h2 className="text-5xl 2xl:text-7xl font-bold text-white shrink-0 mb-6">My Project</h2>
 
           <div className="flex-1 flex min-h-0">
             {/* 左：説明 */}
             <div className="flex flex-col justify-center w-[48%] pr-12">
               <div className="flex items-center gap-5 mb-9">
-                <span className="text-5xl font-bold text-white tracking-tight leading-none">Crowd Map</span>
-                <img src="/footprints.svg" alt="" className="w-14 h-14 flex-shrink-0"
+                <span className="text-5xl 2xl:text-7xl font-bold text-white tracking-tight leading-none">Crowd Map</span>
+                <img src="/footprints.svg" alt="" className="w-14 h-14 2xl:w-20 2xl:h-20 flex-shrink-0"
                   style={{ filter: 'invert(1) brightness(2)' }} />
               </div>
               <ul className="space-y-4 mb-8">
                 {bullets.map((b, i) => (
-                  <li key={i} className="flex items-start gap-3 text-white/75 text-sm leading-relaxed">
+                  <li key={i} className="flex items-start gap-3 text-white/75 text-sm 2xl:text-lg leading-relaxed">
                     <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-white/60 flex-shrink-0" />
                     {b}
                   </li>
                 ))}
               </ul>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2 2xl:gap-3">
                 {['Next.js', 'LIFF', 'Google Maps Platform'].map((tech, i) => (
-                  <span key={i} className="px-3 py-1 text-xs tracking-wider text-white/55 border border-white/20 rounded-full">
+                  <span key={i} className="px-3 py-1 2xl:px-5 2xl:py-2 text-xs 2xl:text-sm tracking-wider text-white/55 border border-white/20 rounded-full">
                     {tech}
                   </span>
                 ))}
@@ -178,7 +178,7 @@ function MyProjectDesktop() {
               {loopImages.map((img, i) => (
                 <div key={i} ref={el => imgRefs.current[i] = el}
                   className="flex-shrink-0 rounded-2xl overflow-hidden"
-                  style={{ width: 'clamp(260px, 38vw, 560px)' }}>
+                  style={{ width: 'clamp(260px, 38vw, 720px)' }}>
                   <img src={img.src} alt={img.label} className="w-full h-auto object-contain block" />
                 </div>
               ))}
