@@ -69,12 +69,6 @@ export default function Hero() {
         >
           Kasai Genta
         </h1>
-        <p
-          ref={subtitleRef}
-          className="mt-4 text-white/60 text-sm md:text-base tracking-[0.4em] font-light"
-        >
-          Product Manager
-        </p>
       </div>
 
       {/* スクロール誘導 */}
