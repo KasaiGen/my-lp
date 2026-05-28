@@ -2,26 +2,26 @@
 name: Deploy static content to Pages
 
 on:
-  # 対象ブランチプッシュ時に実行されます
+  # 対象ブランチプッシュ時に実行
   push:
     branches: ['main']
 
-  # Actions タブから手動でワークフローを実行できるようにする
+  # Actions タブから手動でワークフローを実行
   workflow_dispatch:
 
-# GITHUB_TOKEN のパーミッションを設定し、GitHub Pages へのデプロイを許可する
+# GITHUB_TOKEN のパーミッションを設定し、GitHub Pages へのデプロイを許可
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# 1 つの同時デプロイメントを可能にする
+# 1 つの同時デプロイメントを可能に
 concurrency:
   group: 'pages'
   cancel-in-progress: true
 
 jobs:
-  # デプロイするだけなので、単一のデプロイジョブ
+  # デプロイのみのため、単一のデプロイジョブ
   deploy:
     environment:
       name: github-pages
