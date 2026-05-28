@@ -55,7 +55,7 @@ function HistoryDesktop() {
   const dotLinePct  = isMobile ? 84 : 63
   const leftColW    = isMobile ? '46%' : '46%'
   const photoW      = isMobile ? 'clamp(130px, 40vw, 420px)' : 'clamp(100px, 34vw, 560px)'
-  const bgH         = isMobile ? '62%' : '100%'
+  const bgH         = '100%'
 
   const outerRef    = useRef(null)
   const bgRefs      = useRef([])
@@ -148,7 +148,7 @@ function HistoryDesktop() {
         {/* モバイル：画像下端から黒へのグラデーション */}
         {isMobile && (
           <div className="absolute inset-x-0 z-[5] pointer-events-none"
-            style={{ top: '48%', bottom: 0, background: 'linear-gradient(to bottom, transparent, black)' }} />
+            style={{ top: '70%', bottom: 0, background: 'linear-gradient(to bottom, transparent, black)' }} />
         )}
         <div className="absolute inset-0 bg-black/65 z-10" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/40 z-10" />
