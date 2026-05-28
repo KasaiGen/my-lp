@@ -44,75 +44,17 @@ const stackedPos = [
 
 const DOT_TOPS = [16, 38, 61, 84]
 
-// ── モバイル用：写真フルスクリーンスタック ──
-function HistoryMobile() {
-  const outerRef   = useRef(null)
-  const photoRefs  = useRef([])
-  const captionRefs = useRef([])
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.set(photoRefs.current[0], { y: 0 })
-      photoRefs.current.slice(1).forEach(el => gsap.set(el, { y: '100%' }))
-      captionRefs.current.forEach(el => gsap.set(el, { opacity: 0 }))
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: outerRef.current,
-          start: 'top top',
-          end: 'bottom bottom',
-          scrub: 1.2,
-        },
-      })
-
-      tl.to(captionRefs.current[0], { opacity: 1, duration: 0.06 }, 0)
-
-      const pts = [0.08, 0.38, 0.68]
-      pts.forEach((start, i) => {
-        tl.to(photoRefs.current[i + 1], { y: 0, duration: 0.22, ease: 'power2.out' }, start)
-        tl.to(captionRefs.current[i],     { opacity: 0, duration: 0.06 }, start + 0.10)
-        tl.to(captionRefs.current[i + 1], { opacity: 1, duration: 0.06 }, start + 0.18)
-      })
-    }, outerRef)
-
-    return () => ctx.revert()
-  }, [])
-
-  return (
-    <div ref={outerRef} style={{ height: '500vh' }}>
-      <div className="sticky top-0 h-screen overflow-hidden bg-black">
-        {/* 上部グラデーション＋タイトル */}
-        <div className="absolute top-0 left-0 right-0 z-50 px-6 pt-10 pb-16 pointer-events-none"
-          style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.65) 0%, transparent 100%)' }}>
-          <h2 className="text-2xl font-bold text-white">History</h2>
-        </div>
-
-        {milestones.map((m, i) => (
-          <div
-            key={i}
-            ref={el => photoRefs.current[i] = el}
-            className="absolute inset-0"
-            style={{ zIndex: i + 1 }}
-          >
-            <img src={m.photo} alt="" className="w-full h-full object-cover object-top" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
-            <div
-              ref={el => captionRefs.current[i] = el}
-              className="absolute bottom-0 left-0 right-0 px-6 pb-14"
-            >
-              <span className="block text-5xl font-bold text-white leading-none mb-2">{m.age}</span>
-              <span className="block text-white/75 font-medium text-sm mb-3">{m.title}</span>
-              <span className="block text-white/50 text-xs leading-relaxed">{m.desc}</span>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-// ── デスクトップ用アニメーションレイアウト ──
+// ── アニメーションレイアウト（全サイズ共通） ──
 function HistoryDesktop() {
+  // SPAのみ（SSRなし）なので window は常に参照可能
+  const isMobile    = typeof window !== 'undefined' && window.innerWidth < 768
+  const outerHeight = isMobile ? '400vh' : '600vh'
+  const dotTops     = isMobile ? [13, 34, 57, 79] : [16, 38, 61, 84]
+  const dotLinePct  = isMobile ? 72 : 63
+  const leftColW    = isMobile ? '42%' : '46%'
+  const photoW      = isMobile ? 'clamp(110px, 34vw, 420px)' : 'clamp(100px, 34vw, 420px)'
+  const bgH         = isMobile ? '62%' : '100%'
+
   const outerRef    = useRef(null)
   const bgRefs      = useRef([])
   const photoRefs   = useRef([])
@@ -186,7 +128,7 @@ function HistoryDesktop() {
   }, [])
 
   return (
-    <div ref={outerRef} style={{ height: '600vh', position: 'relative' }}>
+    <div ref={outerRef} style={{ height: outerHeight, position: 'relative' }}>
       {/* 上端：直前セクション（黒）からHistoryへ溶け込む */}
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '160px',
         background: 'linear-gradient(to bottom, #000, transparent)', zIndex: 200, pointerEvents: 'none' }} />
@@ -194,33 +136,41 @@ function HistoryDesktop() {
       <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '160px',
         background: 'linear-gradient(to top, #000, transparent)', zIndex: 200, pointerEvents: 'none' }} />
       <div className="sticky top-0 h-screen overflow-hidden bg-black">
-        {milestones.map((m, i) => (
-          <img key={i} ref={el => bgRefs.current[i] = el} src={m.bg} alt=""
-            className="absolute inset-0 w-full h-full object-cover" />
-        ))}
+        {/* 背景画像：モバイルは画面上部 62% に収め、下はグラデーションで黒へ */}
+        <div className="absolute inset-x-0 top-0 overflow-hidden" style={{ height: bgH }}>
+          {milestones.map((m, i) => (
+            <img key={i} ref={el => bgRefs.current[i] = el} src={m.bg} alt=""
+              className="absolute inset-0 w-full h-full object-cover" />
+          ))}
+        </div>
+        {/* モバイル：画像下端から黒へのグラデーション */}
+        {isMobile && (
+          <div className="absolute inset-x-0 z-[5] pointer-events-none"
+            style={{ top: '48%', bottom: 0, background: 'linear-gradient(to bottom, transparent, black)' }} />
+        )}
         <div className="absolute inset-0 bg-black/65 z-10" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/40 z-10" />
 
-        <div className="relative z-20 h-full flex flex-col px-16 pt-14 pb-10">
-          <h2 className="text-5xl font-bold text-white shrink-0 mb-6">History</h2>
+        <div className="relative z-20 h-full flex flex-col px-4 md:px-8 lg:px-16 pt-10 md:pt-14 pb-8 md:pb-10">
+          <h2 className="text-3xl md:text-5xl font-bold text-white shrink-0 mb-4 md:mb-6">History</h2>
 
           <div className="flex-1 flex min-h-0">
             {/* 左：写真スタック */}
-            <div className="relative flex items-center justify-center overflow-hidden" style={{ width: '46%' }}>
+            <div className="relative flex items-center justify-center overflow-hidden" style={{ width: leftColW }}>
               {milestones.map((m, i) => (
                 <img key={i} ref={el => photoRefs.current[i] = el} src={m.photo} alt={m.age}
                   className="absolute rounded-sm shadow-2xl"
-                  style={{ width: 'clamp(200px, 34vw, 420px)', aspectRatio: '4/3', objectFit: 'cover', zIndex: i + 1 }} />
+                  style={{ width: photoW, aspectRatio: '4/3', objectFit: 'cover', zIndex: i + 1 }} />
               ))}
             </div>
 
             {/* 右：テキスト＋ライン */}
             <div className="relative flex-1">
-              {/* 縦ライン：右カラムの63%地点に固定 */}
-              <div className="absolute top-0 h-full" style={{ left: 'calc(63% - 1px)', width: '2px' }}>
+              {/* 縦ライン */}
+              <div className="absolute top-0 h-full" style={{ left: `calc(${dotLinePct}% - 1px)`, width: '2px' }}>
                 {milestones.slice(0, -1).map((_, i) => {
-                  const top = DOT_TOPS[i]
-                  const height = DOT_TOPS[i + 1] - DOT_TOPS[i]
+                  const top = dotTops[i]
+                  const height = dotTops[i + 1] - dotTops[i]
                   return (
                     <div key={i} ref={el => lineSegRefs.current[i] = el}
                       className="absolute left-0 w-full bg-white/90"
@@ -231,20 +181,18 @@ function HistoryDesktop() {
 
               {milestones.map((m, i) => (
                 <div key={i} className="absolute"
-                  style={{ top: `${DOT_TOPS[i]}%`, left: 0, width: '63%', transform: 'translateY(-50%)' }}>
-                  {/* ドット：コンテナ右端 = 縦ラインの位置 */}
+                  style={{ top: `${dotTops[i]}%`, left: 0, width: `${dotLinePct}%`, transform: 'translateY(-50%)' }}>
                   <div ref={el => dotRefs.current[i] = el}
-                    className="absolute w-4 h-4 rounded-full bg-white shadow-lg z-10"
-                    style={{ right: '-8px', top: '50%', transform: 'translateY(-50%)' }} />
-                  {/* テキスト＋枝：枝が残りスペースを自動で埋める */}
+                    className="absolute w-3 h-3 md:w-4 md:h-4 rounded-full bg-white shadow-lg z-10"
+                    style={{ right: '-6px', top: '50%', transform: 'translateY(-50%)' }} />
                   <div className="flex items-center pr-2">
                     <div ref={el => textRefs.current[i] = el} className="pl-2 text-left shrink-0">
-                      <span className="block text-6xl font-bold text-white leading-none mb-3">{m.age}</span>
-                      <span className="block text-white/80 font-medium text-base mb-3">{m.title}</span>
-                      <span className="block text-white/55 text-sm leading-relaxed max-w-[340px]">{m.desc}</span>
+                      <span className="block text-xl md:text-4xl lg:text-6xl font-bold text-white leading-none mb-1 md:mb-3">{m.age}</span>
+                      <span className="block text-white/80 font-medium text-xs md:text-sm lg:text-base md:mb-3">{m.title}</span>
+                      <span className="hidden md:block text-white/55 text-xs leading-relaxed max-w-[220px] lg:max-w-[340px]">{m.desc}</span>
                     </div>
                     <div ref={el => branchRefs.current[i] = el}
-                      style={{ flex: 1, minWidth: '16px', height: '1px', background: 'rgba(255,255,255,0.5)' }} />
+                      style={{ flex: 1, minWidth: '12px', height: '1px', background: 'rgba(255,255,255,0.5)' }} />
                   </div>
                 </div>
               ))}
@@ -257,10 +205,5 @@ function HistoryDesktop() {
 }
 
 export default function History() {
-  return (
-    <>
-      <div className="md:hidden"><HistoryMobile /></div>
-      <div className="hidden md:block"><HistoryDesktop /></div>
-    </>
-  )
+  return <HistoryDesktop />
 }
