@@ -50,9 +50,9 @@ function HistoryDesktop() {
   const isMobile    = typeof window !== 'undefined' && window.innerWidth < 768
   const outerHeight = isMobile ? '400vh' : '600vh'
   const dotTops     = isMobile ? [13, 34, 57, 79] : [16, 38, 61, 84]
-  const dotLinePct  = isMobile ? 72 : 63
-  const leftColW    = isMobile ? '42%' : '46%'
-  const photoW      = isMobile ? 'clamp(110px, 34vw, 420px)' : 'clamp(100px, 34vw, 420px)'
+  const dotLinePct  = isMobile ? 84 : 63
+  const leftColW    = isMobile ? '46%' : '46%'
+  const photoW      = isMobile ? 'clamp(130px, 40vw, 420px)' : 'clamp(100px, 34vw, 560px)'
   const bgH         = isMobile ? '62%' : '100%'
 
   const outerRef    = useRef(null)
@@ -189,7 +189,7 @@ function HistoryDesktop() {
                     <div ref={el => textRefs.current[i] = el} className="pl-2 text-left shrink-0">
                       <span className="block text-xl md:text-4xl lg:text-6xl font-bold text-white leading-none mb-1 md:mb-3">{m.age}</span>
                       <span className="block text-white/80 font-medium text-xs md:text-sm lg:text-base md:mb-3">{m.title}</span>
-                      <span className="hidden md:block text-white/55 text-xs leading-relaxed max-w-[220px] lg:max-w-[340px]">{m.desc}</span>
+                      <span className="hidden md:block text-white/55 leading-relaxed max-w-[220px] lg:max-w-[340px] 2xl:max-w-[480px]" style={{ fontSize: '18px' }}>{m.desc}</span>
                     </div>
                     <div ref={el => branchRefs.current[i] = el}
                       style={{ flex: 1, minWidth: '12px', height: '1px', background: 'rgba(255,255,255,0.5)' }} />
