@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -7,10 +7,10 @@ gsap.registerPlugin(ScrollTrigger)
 const base = import.meta.env.BASE_URL
 
 const images = [
+  { src: `${base}mypjt_title.png`, label: 'Top' },
   { src: `${base}mypjt_all.png`,   label: 'Map View' },
   { src: `${base}mypjt_feed.png`,  label: 'Feed' },
   { src: `${base}mypjt_modal.png`, label: 'Detail' },
-  { src: `${base}mypjt_title.png`, label: 'Top' },
   { src: `${base}mypjt_trend.png`, label: 'Trend' },
 ]
 
@@ -23,23 +23,113 @@ const bullets = [
 // 3セット複製：ループの錯覚に必要なバッファ
 const loopImages = [...images, ...images, ...images]
 
+function MobileCarousel() {
+  const [current, setCurrent] = useState(0)
+  const containerRef = useRef(null)
+  const touchStartX = useRef(null)
+  const touchStartY = useRef(null)
+  const isDragging = useRef(false)
+  const currentRef = useRef(current)
+  currentRef.current = current
+
+  const prev = () => setCurrent(c => (c - 1 + images.length) % images.length)
+  const next = () => setCurrent(c => (c + 1) % images.length)
+
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el) return
+
+    const onTouchStart = (e) => {
+      touchStartX.current = e.touches[0].clientX
+      touchStartY.current = e.touches[0].clientY
+      isDragging.current = false
+    }
+
+    const onTouchMove = (e) => {
+      if (touchStartX.current === null) return
+      const dx = e.touches[0].clientX - touchStartX.current
+      const dy = e.touches[0].clientY - touchStartY.current
+      if (!isDragging.current && Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 8) {
+        isDragging.current = true
+      }
+      if (isDragging.current) e.preventDefault()
+    }
+
+    const onTouchEnd = (e) => {
+      if (touchStartX.current === null) return
+      const dx = e.changedTouches[0].clientX - touchStartX.current
+      if (isDragging.current && Math.abs(dx) > 40) {
+        const c = currentRef.current
+        setCurrent(dx < 0
+          ? (c + 1) % images.length
+          : (c - 1 + images.length) % images.length)
+      }
+      touchStartX.current = null
+      touchStartY.current = null
+      isDragging.current = false
+    }
+
+    el.addEventListener('touchstart', onTouchStart, { passive: true })
+    el.addEventListener('touchmove', onTouchMove, { passive: false })
+    el.addEventListener('touchend', onTouchEnd, { passive: true })
+
+    return () => {
+      el.removeEventListener('touchstart', onTouchStart)
+      el.removeEventListener('touchmove', onTouchMove)
+      el.removeEventListener('touchend', onTouchEnd)
+    }
+  }, [])
+
+  return (
+    <div ref={containerRef} className="relative select-none">
+      <div className="overflow-hidden rounded-2xl">
+        <div
+          className="flex transition-transform duration-300 ease-out"
+          style={{ transform: `translateX(-${current * 100}%)` }}>
+          {images.map((img, i) => (
+            <div key={i} className="w-full flex-shrink-0">
+              <img src={img.src} alt={img.label} className="w-full object-contain" />
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="flex items-center justify-between mt-4 px-1">
+        <span className="text-white/40 text-xs tracking-widest uppercase">{images[current].label}</span>
+        <div className="flex gap-2">
+          {images.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrent(i)}
+              className={`w-1.5 h-1.5 rounded-full transition-all duration-200 ${i === current ? 'bg-white scale-125' : 'bg-white/30'}`}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function MyProjectMobile() {
   return (
     <section className="relative py-20 px-6">
       <div className="absolute inset-0 z-0">
         <img src={`${base}mypjt_background.png`} alt="" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-black/70" />
+        <div className="absolute inset-0 bg-black/85" />
       </div>
+      <div className="absolute top-0 left-0 right-0 h-24 z-20 pointer-events-none"
+        style={{ background: 'linear-gradient(to bottom, #000, transparent)' }} />
+      <div className="absolute bottom-0 left-0 right-0 h-24 z-20 pointer-events-none"
+        style={{ background: 'linear-gradient(to top, #000, transparent)' }} />
       <div className="relative z-10">
-        <p className="text-white/40 text-xs tracking-[0.3em] uppercase mb-6">My Project</p>
+        <h2 className="text-4xl font-bold text-white mb-8">My Project</h2>
         <div className="flex items-center gap-4 mb-8">
-          <h2 className="text-4xl font-bold text-white tracking-tight leading-none">Crowd Map</h2>
+          <span className="text-2xl font-semibold text-white tracking-tight leading-none">Crowd Map</span>
           <img src={`${base}footprints.svg`} alt="" className="w-10 h-10 flex-shrink-0"
             style={{ filter: 'invert(1) brightness(2)' }} />
         </div>
         <ul className="space-y-3 mb-6">
           {bullets.map((b, i) => (
-            <li key={i} className="flex items-start gap-3 text-white/70 text-sm leading-relaxed">
+            <li key={i} className="flex items-start gap-3 text-white text-sm leading-relaxed">
               <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-white/60 flex-shrink-0" />
               {b}
             </li>
@@ -47,18 +137,12 @@ function MyProjectMobile() {
         </ul>
         <div className="flex flex-wrap gap-2 mb-10">
           {['Next.js', 'LIFF', 'Google Maps Platform'].map((tech, i) => (
-            <span key={i} className="px-3 py-1 text-xs tracking-wider text-white/55 border border-white/20 rounded-full">
+            <span key={i} className="px-3 py-1 text-xs tracking-wider text-white border border-white/20 rounded-full">
               {tech}
             </span>
           ))}
         </div>
-        <div className="flex flex-col gap-5">
-          {images.map((img, i) => (
-            <div key={i} className="rounded-2xl overflow-hidden">
-              <img src={img.src} alt={img.label} className="w-full object-contain rounded-2xl" />
-            </div>
-          ))}
-        </div>
+        <MobileCarousel />
       </div>
     </section>
   )
@@ -162,7 +246,7 @@ function MyProjectDesktop() {
         </div>
 
         <div className="relative z-10 h-full flex flex-col px-8 lg:px-16 pt-14 pb-10">
-          <h2 className="text-5xl 2xl:text-7xl font-bold text-white shrink-0 mb-6">My Project</h2>
+          <h2 className="text-4xl md:text-5xl 2xl:text-7xl font-bold text-white shrink-0 mb-6">My Project</h2>
 
           <div className="flex-1 flex min-h-0">
             {/* 左：説明 */}
