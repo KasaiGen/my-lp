@@ -31,7 +31,8 @@ export default function MyVision() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      const trigger = { trigger: sectionRef.current, start: 'top 80%' }
+      const startVal = window.innerWidth < 768 ? 'top center' : 'top 80%'
+      const trigger = { trigger: sectionRef.current, start: startVal }
 
       gsap.from(h2Ref.current, {
         opacity: 0, y: 16, duration: 0.8, delay: 0, ease: 'power2.out', scrollTrigger: trigger,

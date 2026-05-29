@@ -11,6 +11,8 @@ export default function ThirdCreed({ itemRef, textRef }) {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      const start = window.innerWidth < 768 ? 'top center' : 'top 75%'
+
       gsap.from(wrapRef.current, {
         opacity: 0,
         x: 80,
@@ -18,7 +20,7 @@ export default function ThirdCreed({ itemRef, textRef }) {
         ease: 'power3.out',
         scrollTrigger: {
           trigger: itemRef.current,
-          start: 'top 75%',
+          start,
           toggleActions: 'play none none none',
         },
       })
@@ -31,7 +33,7 @@ export default function ThirdCreed({ itemRef, textRef }) {
         ease: 'power3.out',
         scrollTrigger: {
           trigger: itemRef.current,
-          start: 'top 75%',
+          start,
           toggleActions: 'play none none none',
         },
       })
@@ -44,7 +46,7 @@ export default function ThirdCreed({ itemRef, textRef }) {
         ease: 'power2.inOut',
         scrollTrigger: {
           trigger: itemRef.current,
-          start: 'top 75%',
+          start,
           toggleActions: 'play none none none',
         },
       })
@@ -57,7 +59,7 @@ export default function ThirdCreed({ itemRef, textRef }) {
         ease: 'power2.inOut',
         scrollTrigger: {
           trigger: itemRef.current,
-          start: 'top 75%',
+          start,
           toggleActions: 'play none none none',
         },
       })

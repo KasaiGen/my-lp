@@ -11,6 +11,8 @@ export default function AoteruCreed({ itemRef, textRef }) {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      const start = window.innerWidth < 768 ? 'top center' : 'top 75%'
+
       // 画像全体のフェードイン
       gsap.from(wrapRef.current, {
         opacity: 0,
@@ -19,7 +21,7 @@ export default function AoteruCreed({ itemRef, textRef }) {
         ease: 'power3.out',
         scrollTrigger: {
           trigger: itemRef.current,
-          start: 'top 75%',
+          start,
           toggleActions: 'play none none none',
         },
       })
@@ -33,7 +35,7 @@ export default function AoteruCreed({ itemRef, textRef }) {
         ease: 'power3.out',
         scrollTrigger: {
           trigger: itemRef.current,
-          start: 'top 75%',
+          start,
           toggleActions: 'play none none none',
         },
       })
@@ -47,7 +49,7 @@ export default function AoteruCreed({ itemRef, textRef }) {
         ease: 'power2.inOut',
         scrollTrigger: {
           trigger: itemRef.current,
-          start: 'top 75%',
+          start,
           toggleActions: 'play none none none',
         },
       })

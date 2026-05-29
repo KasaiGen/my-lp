@@ -17,6 +17,8 @@ function CreedItem({ creed }) {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      const start = window.innerWidth < 768 ? 'top center' : 'top 75%'
+
       gsap.from(imgRef.current, {
         opacity: 0,
         x: isImageLeft ? -50 : 50,
@@ -24,7 +26,7 @@ function CreedItem({ creed }) {
         ease: 'power3.out',
         scrollTrigger: {
           trigger: itemRef.current,
-          start: 'top 85%',
+          start,
           toggleActions: 'play none none none',
         },
       })
@@ -36,7 +38,7 @@ function CreedItem({ creed }) {
         ease: 'power3.out',
         scrollTrigger: {
           trigger: itemRef.current,
-          start: 'top 75%',
+          start,
           toggleActions: 'play none none none',
         },
       })
