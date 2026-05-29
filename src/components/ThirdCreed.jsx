@@ -6,7 +6,8 @@ gsap.registerPlugin(ScrollTrigger)
 
 export default function ThirdCreed({ itemRef, textRef }) {
   const wrapRef = useRef(null)
-  const commentRef = useRef(null)
+  const comment1Ref = useRef(null)
+  const comment2Ref = useRef(null)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -35,11 +36,24 @@ export default function ThirdCreed({ itemRef, textRef }) {
         },
       })
 
-      gsap.set(commentRef.current, { opacity: 0 })
-      gsap.to(commentRef.current, {
+      gsap.set(comment1Ref.current, { opacity: 0 })
+      gsap.to(comment1Ref.current, {
         opacity: 1,
         duration: 1.0,
         delay: 1.0,
+        ease: 'power2.inOut',
+        scrollTrigger: {
+          trigger: itemRef.current,
+          start: 'top 75%',
+          toggleActions: 'play none none none',
+        },
+      })
+
+      gsap.set(comment2Ref.current, { opacity: 0 })
+      gsap.to(comment2Ref.current, {
+        opacity: 1,
+        duration: 1.0,
+        delay: 2.5,
         ease: 'power2.inOut',
         scrollTrigger: {
           trigger: itemRef.current,
@@ -62,8 +76,15 @@ export default function ThirdCreed({ itemRef, textRef }) {
           style={{ filter: 'grayscale(10%) contrast(105%)' }}
         />
         <img
-          ref={commentRef}
-          src={`${import.meta.env.BASE_URL}lookback_comment.png`}
+          ref={comment1Ref}
+          src={`${import.meta.env.BASE_URL}lookback_comment_1.png`}
+          alt=""
+          className="absolute top-0 left-0 w-full h-full object-contain rounded-sm"
+          style={{ filter: 'grayscale(10%) contrast(105%)', opacity: 0 }}
+        />
+        <img
+          ref={comment2Ref}
+          src={`${import.meta.env.BASE_URL}lookback_comment_2.png`}
           alt=""
           className="absolute top-0 left-0 w-full h-full object-contain rounded-sm"
           style={{ filter: 'grayscale(10%) contrast(105%)', opacity: 0 }}
