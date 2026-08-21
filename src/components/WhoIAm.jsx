@@ -7,7 +7,7 @@ gsap.registerPlugin(ScrollTrigger)
 const profile = [
   { label: 'Name',            value: '河西 玄太' },
   { label: 'Origin',          value: '山梨県 甲府市' },
-  { label: 'Favorite Artist', value: 'betcover!!' },
+  { label: 'Favorite Artist', value: 'kanekoayano' },
 ]
 
 const skills = ['TypeScript', 'React', 'Next.js', 'PHP', 'Laravel', 'Supabase', 'Prisma']
